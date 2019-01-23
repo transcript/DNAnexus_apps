@@ -1,0 +1,128 @@
+{
+  "name": "humann2",
+  "title": "HUMAnN2 - HMP Unified Metabolic Analysis Network",
+  "summary": "A pipeline for efficiently and accurately profiling the presence/absence and abundance of microbial pathways in a community from metagenomic or metatranscriptomic sequencing data.",
+  "dxapi": "1.0.0",
+  "version": "0.0.1",
+  "inputSpec": [
+    {
+      "name": "fastq_input",
+      "label": "Input file",
+      "class": "file",
+      "optional": false,
+      "patterns": [
+        "*"
+      ],
+      "help": "May be either FASTQ or SAM/BAM format."
+    },
+    {
+      "name": "database",
+      "label": "HUMAnN2 database file",
+      "class": "string",
+      "default": "uniref90_ec_filtered_diamond",
+      "choices": [
+        "uniref90_diamond", "uniref90_ec_filtered_diamond", "uniref50_diamond", "uniref50_ec_filtered_diamond"
+      ],
+      "help": "Used for protein translated search of unmapped reads.  EC-filtered versions are smaller.  UniRef90 is recommended as default."
+    },
+    {
+      "name": "mpa_pkl",
+      "label": "MetaPhlAn2 pickle file",
+      "class": "file",
+      "optional": true,
+      "patterns": [
+        "*"
+      ],
+      "help": "Marker list in .pkl format."
+    },
+    {
+      "name": "ignore_markers",
+      "label": "Ignore markers file",
+      "class": "file",
+      "optional": true,
+      "patterns": [
+        "*"
+      ],
+      "help": "List of markers to be ignored."
+    },
+    {
+      "name": "custom_db",
+      "label": "Custom MetaPhlAn2 database",
+      "class": "file",
+      "optional": true,
+      "patterns": [
+        "*"
+      ],
+      "help": "Custom Bowtie2 dabase."
+    },
+    {
+      "name": "num_cores",
+      "label": "Number of cores",
+      "class": "int",
+      "optional": true,
+      "default": 8,
+      "help": ""
+    }
+  ],
+  "outputSpec": [
+    {
+      "name": "gene_families",
+      "label": "Gene families output file",
+      "class": "file",
+      "patterns": [
+        "*"
+      ],
+      "help": ""
+    },
+    {
+      "name": "pathway_abundance",
+      "label": "Pathway abundance file",
+      "class": "file",
+      "patterns": [
+        "*"
+      ],
+      "help": ""
+    },
+    {
+      "name": "pathway_coverage",
+      "label": "Pathway coverage file",
+      "class": "file",
+      "patterns": [
+        "*"
+      ],
+      "help": ""
+    }
+  ],
+  "runSpec": {
+    "timeoutPolicy": {
+      "*": {
+        "hours": 48
+      }
+    },
+    "assetDepends": [
+      {"id": "record-FQvKq20019GQB0Qf7ZZQP9JK"}
+    ],
+    "execDepends": [
+        {"name": "numpy", "package_manager": "pip"},
+	      {"name": "mercurial"}
+      ],
+    "interpreter": "bash",
+    "release": "14.04",
+    "distribution": "Ubuntu",
+    "file": "src/humann2.sh"
+  },
+  "access": {
+    "network": [
+      "*"
+    ]
+  },
+  "regionalOptions": {
+    "aws:us-east-1": {
+      "systemRequirements": {
+        "*": {
+          "instanceType": "mem1_ssd1_x16"
+        }
+      }
+    }
+  }
+}
