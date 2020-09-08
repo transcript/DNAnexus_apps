@@ -11,9 +11,17 @@
       "class": "file",
       "optional": false,
       "patterns": [
-        "*"
+        "*.fq", "*.fastq", "*.fq.gz", "*.fastq.gz", "*.sam", "*.bam"
       ],
       "help": "May be either FASTQ or SAM/BAM format."
+    },
+    {
+      "name": "fastq_reverse_input",
+      "label": "Reverse FASTQ input file",
+      "class": "file",
+      "optional": true,
+      "patterns": [ "*.fastq", "*.fq", "*.fastq.gz", "*.fq.gz" ],
+      "help": "May provide reverse reads if giving FASTQ input; note that these are simply concatenated with forward reads."
     },
     {
       "name": "database",
@@ -31,7 +39,7 @@
       "class": "file",
       "optional": true,
       "patterns": [
-        "*"
+        "*.pkl"
       ],
       "help": "Marker list in .pkl format."
     },
@@ -60,7 +68,7 @@
       "label": "Number of cores",
       "class": "int",
       "optional": true,
-      "default": 8,
+      "default": 16,
       "help": ""
     }
   ],
@@ -104,10 +112,11 @@
     ],
     "execDepends": [
         {"name": "numpy", "package_manager": "pip"},
-	      {"name": "mercurial"}
+	      {"name": "mercurial"},
+	      {"name": "pigz"}
       ],
     "interpreter": "bash",
-    "release": "14.04",
+    "release": "16.04",
     "distribution": "Ubuntu",
     "file": "src/humann2.sh"
   },

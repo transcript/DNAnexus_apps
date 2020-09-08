@@ -1,0 +1,111 @@
+{
+  "name": "qiime-taxonomy",
+  "title": "QIIME2 Taxonomy Analysis",
+  "summary": "A next-generation microbiome bioinformatics platform that is extensible, free, open source, and community developed.",
+  "dxapi": "1.0.0",
+  "version": "0.0.1",
+  "inputSpec": [
+    {
+      "name": "sequences",
+      "label": "Sequences",
+      "class": "array:file",
+      "optional": false,
+      "patterns": [
+        "*.fastq.gz"
+      ],
+      "help": "If not providing barcodes, make sure that files have the Casava 1.8 naming format."
+    },
+    {
+      "name": "barcodes",
+      "label": "Barcodes",
+      "class": "file",
+      "optional": true,
+      "patterns": [
+        "*"
+      ],
+      "help": ""
+    },
+    {
+      "name": "metadata",
+      "label": "Metadata",
+      "class": "file",
+      "optional": true,
+      "patterns": [
+        "*"
+      ],
+      "help": ""
+    }
+  ],
+  "outputSpec": [
+    {
+      "name": "rep_seqs",
+      "label": "Representative sequences",
+      "class": "file",
+      "patterns": [
+        "*"
+      ],
+      "help": ""
+    },
+    {
+      "name": "feature_table",
+      "label": "Feature table",
+      "class": "file",
+      "patterns": [
+        "*"
+      ],
+      "help": ""
+    },
+    {
+      "name": "taxonomy",
+      "label": "Taxonomy assignment",
+      "class": "file",
+      "patterns": [
+        "*"
+      ],
+      "help": ""
+    },
+    {
+      "name": "taxa_bar_plots",
+      "label": "Taxonomy interactive bar plot",
+      "class": "file",
+      "patterns": [
+        "*"
+      ],
+      "help": "To view, try https://view.qiime2.org/"
+    },
+    {
+      "name": "metadata",
+      "label": "Metadata file used",
+      "class": "file",
+      "patterns": [
+        "*"
+      ],
+      "help": "For debugging"
+    }
+  ],
+  "runSpec": {
+    "timeoutPolicy": {
+      "*": {
+        "hours": 48
+      }
+    },
+    "interpreter": "bash",
+    "release": "14.04",
+    "distribution": "Ubuntu",
+    "file": "src/qiime-taxonomy.sh"
+  },
+  "access": {
+    "network": [
+      "*"
+    ]
+  },
+  "regionalOptions": {
+    "aws:us-east-1": {
+      "systemRequirements": {
+        "*": {
+          "instanceType": "mem1_ssd1_x8"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "name": "PEAR",
+  "title": "PEAR - Paired End Read Merger",
+  "summary": "A lightweight tool to merge paired-end reads.",
+  "dxapi": "1.0.0",
+  "inputSpec": [
+    {
+      "name": "forward_reads",
+      "label": "Forward reads file",
+      "help": "",
+      "class": "file",
+      "patterns": ["*.fastq", "*.fq"],
+      "optional": false
+    },
+    {
+      "name": "reverse_reads",
+      "label": "Reverse reads file",
+      "help": "",
+      "class": "file",
+      "patterns": ["*.fastq", "*.fq"],
+      "optional": false
+    }
+  ],
+  "outputSpec": [
+    {
+      "name": "paired_reads",
+      "label": "Paired (merged) reads file",
+      "help": "",
+      "class": "file",
+      "patterns": ["*"]
+    },
+    {
+      "name": "notcombined_1",
+      "label": "Not combined (unmerged) forward reads",
+      "help": "",
+      "class": "file",
+      "patterns": ["*"]
+    },
+    {
+      "name": "notcombined_2",
+      "label": "Not combined (unmerged) reverse reads",
+      "help": "",
+      "class": "file",
+      "patterns": ["*"]
+    },
+    {
+      "name": "discarded",
+      "label": "Discarded (failed QC) reads",
+      "help": "",
+      "class": "file",
+      "patterns": ["*"]
+    }
+  ],
+  "runSpec": {
+    "file": "src/code.sh",
+    "release": "16.04",
+    "interpreter": "bash",
+    "timeoutPolicy": {
+      "*": {
+        "hours": 48
+      }
+    },
+    "distribution": "Ubuntu"
+  },
+  "access": {
+    "network": [
+      "*"
+    ]
+  },
+  "ignoreReuse": false,
+  "regionalOptions": {
+    "aws:us-east-1": {
+      "systemRequirements": {
+        "*": {
+          "instanceType": "mem1_ssd1_x4"
+        }
+      }
+    }
+  }
+}

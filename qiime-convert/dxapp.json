@@ -1,0 +1,63 @@
+{
+  "name": "qiime-convert",
+  "title": "QIIME2 Output Converter",
+  "summary": "Converts QIIME2 qza files into BIOM or TSV files.",
+  "dxapi": "1.0.0",
+  "version": "0.0.1",
+  "inputSpec": [
+    {
+      "name": "qza_file",
+      "label": "QIIME2 output file",
+      "class": "file",
+      "optional": false,
+      "patterns": [
+        "*.qza"
+      ],
+      "help": "Taxonomy .qza file produced by QIIME2."
+    },
+    {
+      "name": "output_type",
+      "label": "Output file type",
+      "class": "string",
+      "choices": ["BIOM", "TSV"],
+      "default": "BIOM",
+      "help": ""
+    }
+  ],
+  "outputSpec": [
+    {
+      "name": "result",
+      "label": "Converted results file",
+      "class": "file",
+      "patterns": [
+        "*"
+      ],
+      "help": ""
+    }
+  ],
+  "runSpec": {
+    "timeoutPolicy": {
+      "*": {
+        "hours": 48
+      }
+    },
+    "interpreter": "bash",
+    "release": "14.04",
+    "distribution": "Ubuntu",
+    "file": "src/qiime-convert.sh"
+  },
+  "access": {
+    "network": [
+      "*"
+    ]
+  },
+  "regionalOptions": {
+    "aws:us-east-1": {
+      "systemRequirements": {
+        "*": {
+          "instanceType": "mem1_ssd1_x8"
+        }
+      }
+    }
+  }
+}

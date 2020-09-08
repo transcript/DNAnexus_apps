@@ -22,6 +22,10 @@ main() {
     addnl_commands='"'
 
     dx download "$fastq_input"
+    if [ -n "$fastq_reverse_input" ]
+    then
+      dx download "$fastq_reverse_input"
+    fi
     if [ -n "$mpa_pkl" ]
     then
         dx download "$mpa_pkl" -o mpa_pkl
@@ -42,6 +46,28 @@ main() {
 
     export PATH=$PATH:/metaphlan2/
 
+    # decompressing FASTQ if it's gzipped
+    if [[ "$fastq_input_name" =~ \.gz$ ]]; then
+        pigz -d "$fastq_input_name"
+        humann2_input="${fastq_input_name%.*}"
+    else
+        humann2_input="$fastq_input_name"
+    fi
+
+    # handling reverse FASTQ, if provided
+    if [ -n "$fastq_reverse_input" ]; then
+      if [[ "$fastq_reverse_input_name" =~ \.gz$ ]]; then
+        pigz -d "$fastq_reverse_input_name"
+        rev_file="${fastq_reverse_input_name%.*}"
+      else
+        rev_file="$fastq_reverse_input_name"
+      fi
+      cat "$rev_file" >> "$humann2_input"
+      echo "$rev_file"" appended to ""$humann2_input"
+    fi
+
+    echo $humann2_input
+
     # database download
     mkdir databases/
     humann2_databases --download uniref $database databases/
@@ -51,8 +77,8 @@ main() {
 
     # running HUMAnN2
     mkdir output_folder/
-    echo "Command used: humann2 --input $fastq_input_name --output output_folder --metaphlan-options ""${addnl_commands}"
-    humann2 --input $fastq_input_name --output output_folder --metaphlan-options "${!addnl_commands}"
+    echo "Command used: humann2 --input $humann2_input --output output_folder --metaphlan-options ""${addnl_commands}" --threads $num_cores
+    humann2 --input $humann2_input --output output_folder --metaphlan-options "${!addnl_commands}" --threads $num_cores
 
     # To report any recognized errors in the correct format in
     # $HOME/job_error.json and exit this script, you can use the
