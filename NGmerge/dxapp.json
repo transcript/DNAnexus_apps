@@ -1,0 +1,101 @@
+{
+  "name": "NGmerge",
+  "title": "NGmerge, v0.2",
+  "summary": "Merging paired-end reads and removing adapters",
+  "dxapi": "1.0.0",
+  "version": "0.0.1",
+  "inputSpec": [
+    {
+      "name": "fwd_reads",
+      "label": "Forward reads",
+      "class": "file",
+      "optional": false,
+      "patterns": [
+        "*.fastq", "*.fq"
+      ],
+      "help": "Forward reads file in FASTQ format."
+    },
+    {
+      "name": "rev_reads",
+      "label": "Reverse reads",
+      "class": "file",
+      "optional": false,
+      "patterns": [
+        "*.fastq", "*.fq"
+      ],
+      "help": "Reverse reads file in FASTQ format."
+    },
+    {
+      "name": "min_overlap",
+      "label": "Minimum reads overlap",
+      "class": "int",
+      "default": 10,
+      "optional": false,
+      "help": "Minimum overlap of paired-end reads to be accepted."
+    },
+   {
+      "name": "max_score",
+      "label": "Maximum quality score",
+      "class": "int",
+      "default": 40,
+      "optional": false,
+      "help": "Maximum allowed quality score."
+    },
+    {
+      "name": "mismatch_allowed",
+      "label": "Fraction of mismatches allowed",
+      "class": "float",
+      "default": 0.99,
+      "optional": false,
+      "help": "Should be a decimal value between 0 and 1 (exclusive)."
+    },
+    {
+      "name": "gzip_outputs",
+      "label": "Gzip outputs?",
+      "class": "boolean",
+      "default": false,
+      "optional": false,
+      "help": ""
+    }
+  ],
+  "outputSpec": [
+    {
+      "name": "output_file",
+      "label": "Merged reads",
+      "class": "file",
+      "patterns": [
+        "*"
+      ],
+      "help": "The successfully merged reads."
+    },
+    {
+      "name": "failed_reads",
+      "label": "Non-merged reads",
+      "class": "array:file",
+      "patterns": [
+        "*"
+      ],
+      "help": "The reads that were not able to be merged. File_1 is the forward reads and File_2 is the reverse reads."
+    }
+  ],
+  "runSpec": {
+    "timeoutPolicy": {
+      "*": {
+        "hours": 48
+      }
+    },
+    "interpreter": "bash",
+    "release": "16.04",
+    "distribution": "Ubuntu",
+    "file": "src/NGmerge.sh"
+  },
+  "regionalOptions": {
+    "aws:us-east-1": {
+      "systemRequirements": {
+        "*": {
+          "instanceType": "mem1_ssd1_x4"
+        }
+      }
+    }
+  }
+}
